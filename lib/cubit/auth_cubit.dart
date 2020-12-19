@@ -73,23 +73,35 @@ class AuthCubit extends Bloc<AuthCubitEvent,AuthCubitState>{
       yield ErrorAuthCubitState();
     }
       else if(event is SignUpAuthCubitEvent){
-
+        print("sign up event");
+        print(event.username);
+        print(event.password);
         //validating username password
-        if((event.username.length<5 && event.username.length>16) || (event.password.length<5 && event.password.length<16)){
+        if((event.username.length<5 || event.username.length>16) || (event.password.length<5 || event.password.length>16)){
 
-        if(event.username.length<5 && event.username.length>16){
+        if(event.username.length<5 || event.username.length>16){
           this.showSnackBar("username length must be 6 to 15");
         }
-        else if(event.password.length<5 && event.password.length<16){
+        else if(event.password.length<5 || event.password.length>16){
           this.showSnackBar("password length must be 6 to 15");
         }
         }
         else{
-          await _userModelRepository.put(UserModel(event.username, event.password));
-          _authRepository.setAuthenticated;
-          showSnackBar("sign-up successful");
-          Future.delayed(Duration(milliseconds: 200));
-          BlocProvider.of<AppStartCubit>(_scaffoldKey.currentContext).add(AppStartCubitEvent.AuthAppStartCubitEvent);
+          UserModel userModel=await _userModelRepository.get(event.username);
+          if(userModel==null){
+            await _userModelRepository.put(UserModel(event.username, event.password));
+            _authRepository.setAuthenticated;
+            print("sign-up successful");
+            showSnackBar("sign-up successful");
+            Future.delayed(Duration(milliseconds: 200));
+            BlocProvider.of<AppStartCubit>(_scaffoldKey.currentContext).add(AppStartCubitEvent.AuthAppStartCubitEvent);
+          }
+          else if(userModel.password==event.password){
+            showSnackBar("User already exist please login");
+          }
+          else{
+            showSnackBar("Username not available");
+          }
           yield SignUpSuccessAuthCubitState();
         }
     }

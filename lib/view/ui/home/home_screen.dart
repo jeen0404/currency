@@ -1,8 +1,6 @@
-
 import 'package:currency/cubit/home_cubit.dart';
 import 'package:currency/cubit/stream_cubit.dart';
 import 'package:currency/model/currency_model.dart';
-import 'package:currency/repository/currency_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,12 +11,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin{
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  // home cibit
+  HomeCubit _homeCubit ;
 
   IntStreamCubit _fromlistcubit=IntStreamCubit();
-
   IntStreamCubit _tolistcubit=IntStreamCubit();
-
-  HomeCubit _homeCubit =HomeCubit();
 
   String fromName="AED";
 
@@ -26,13 +24,23 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
 
   double value=00;
 
+
+  @override
+  void initState() {
+    _homeCubit = HomeCubit(_scaffoldKey);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         centerTitle: true,
         title: Text("Currency", style: GoogleFonts.pacifico()),
-
+        actions: [
+          IconButton(icon: Icon(Icons.save_outlined),onPressed: ()=>_homeCubit.add(AddToHistoryHomeCubitEvent(fromName, toName, value)),)
+        ],
       ),
       body: Column(
         children: [
@@ -86,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                       border: Border.all(color: Theme.of(context).colorScheme.background,width: 0.5)
                   ),
                   height: 200,
-                  child: FutureBuilder<List<CurrencyModel>>(future: CurrencyRepository().getList,
+                  child: FutureBuilder<List<CurrencyModel>>(future: _homeCubit.getCurrencysList,
                     builder: (context,future){
                     if(!future.hasData){
                       return Center(child: CircularProgressIndicator());
@@ -160,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                     border: Border.all(color: Theme.of(context).colorScheme.background,width: 0.5)
                   ),
                   height: 200,
-                  child: FutureBuilder<List<CurrencyModel>>(future:  CurrencyRepository().getList,
+                  child: FutureBuilder<List<CurrencyModel>>(future: _homeCubit.getCurrencysList,
                     builder: (context,future){
                       if(!future.hasData){
                         return Center(child: CircularProgressIndicator());

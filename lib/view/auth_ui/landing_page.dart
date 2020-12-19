@@ -1,11 +1,8 @@
-import 'package:currency/cubit/app_start_cubit.dart';
 import 'package:currency/cubit/auth_cubit.dart';
 import 'package:currency/cubit/stream_cubit.dart';
-import 'package:currency/repository/user_model_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 
 class LandingScreen extends StatefulWidget {
@@ -76,8 +73,8 @@ class _LandingScreenState extends State<LandingScreen> {
 
 
 class LoginPage extends StatelessWidget {
-  String username;
-  String password;
+  String username="";
+  String password="";
 
   @override
   Widget build(BuildContext context) {
@@ -177,8 +174,8 @@ class LoginPage extends StatelessWidget {
 
 class SignUpPage extends StatelessWidget {
 
-  String username;
-  String password;
+  String username="";
+  String password="";
 
   @override
   Widget build(BuildContext context) {
@@ -282,7 +279,7 @@ class SignUpPage extends StatelessWidget {
 class CarouselAnimation extends StatelessWidget {
   final IntStreamCubit intStreamCubit = IntStreamCubit();
   final List<String> imageList = [
-    "https://lh3.googleusercontent.com/proxy/kHKLhQAGefCS0BLknwfMZHlS7q4ExBM4TggMg8-fi_TKe37Di9pOGhx46azfkMSltmEFXuzVRkAik_Wp89f5e2_BWyxu3E0-qaYmnJ3fNHxF6LpYQ7nzZxSBsct-",
+    "https://wallpaperboat.com/wp-content/uploads/2020/08/28/53736/money-08.jpg",
     "https://fsa.zobj.net/crop.php?r=ES98Nw5_mn5nGbeFx2ZeJ_P_N3kWHLKJ5Go8goH9ptAhwTAGprSoeCBu-5s-GGGoTLesKONwWcRCBsHktqVKsU8LWzlAXalp4GTRMm_0teE6FMzqKBwXopnJ_9064DUO7lE8_jTyoFTFqHx5YpOaVibA9rtKubS-i-Sd0iNUYS-7xILfS_S8sRWtK00",
     "https://s1.1zoom.me/b4853/678/Money_Banknotes_Dollars_554891_1080x1920.jpg",
   ];
