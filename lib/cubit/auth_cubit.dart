@@ -64,7 +64,7 @@ class AuthCubit extends Bloc<AuthCubitEvent,AuthCubitState>{
        showSnackBar("User does not exist.");
       }
       else if(userModel.password==event.password){
-        _authRepository.setAuthenticated;
+        _authRepository..setAuthenticated..storeUsername(event.username); 
         showSnackBar("login successful");
         Future.delayed(Duration(milliseconds: 200));
         BlocProvider.of<AppStartCubit>(_scaffoldKey.currentContext).add(AppStartCubitEvent.AuthAppStartCubitEvent);
@@ -90,7 +90,8 @@ class AuthCubit extends Bloc<AuthCubitEvent,AuthCubitState>{
           UserModel userModel=await _userModelRepository.get(event.username);
           if(userModel==null){
             await _userModelRepository.put(UserModel(event.username, event.password));
-            _authRepository.setAuthenticated;
+            _authRepository..setAuthenticated..storeUsername(event.username);
+
             print("sign-up successful");
             showSnackBar("sign-up successful");
             Future.delayed(Duration(milliseconds: 200));

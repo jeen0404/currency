@@ -4,7 +4,10 @@
 //event
 
 import 'package:currency/model/currency_model.dart';
+import 'package:currency/model/history_model.dart';
+import 'package:currency/repository/auth_repository.dart';
 import 'package:currency/repository/currency_repository.dart';
+import 'package:currency/repository/history_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,6 +36,8 @@ class AddToHistoryHomeCubitEvent extends HomeCubitEvent{
 class HomeCubit extends Bloc<HomeCubitEvent,double>{
   final GlobalKey<ScaffoldState> _scaffoldKey;
   CurrencyRepository _currencyRepository =CurrencyRepository();
+  HistoryRepository _historyRepository =HistoryRepository();
+  AuthRepository _authRepository =AuthRepository();
   List<CurrencyModel> currencys=[];
 
   HomeCubit(this._scaffoldKey) : super(0){
@@ -48,6 +53,10 @@ class HomeCubit extends Bloc<HomeCubitEvent,double>{
       yield event.value*exchangeRate;
     }
     else if(event is AddToHistoryHomeCubitEvent){
+      double fromName =(await _currencyRepository.get(event.fromName)).value;
+      double toValue =(await _currencyRepository.get(event.toName)).value;
+      double exchangeRate= toValue/fromName;
+      _historyRepository.put(HistoryModel(null,await _authRepository.fetchUsername, event.fromName, event.toName, event.value, event.value*exchangeRate,exchangeRate));
       showSnackBar("Saved In History");
     }
   }

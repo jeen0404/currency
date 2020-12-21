@@ -16,7 +16,7 @@ class InitSqlLite{
     "CREATE TABLE users(id INTEGER PRIMARY KEY, username TEXT UNIQUE, password Text)",
     );
      db.execute("""
-         CREATE TABLE logs(id INTEGER PRIMARY KEY, username TEXT , from_currency TEXT,to_currency TEXT,from_value REAL,to_value REAL)
+         CREATE TABLE history(id INTEGER PRIMARY KEY, username TEXT , from_currency TEXT,to_currency TEXT,from_value REAL,to_value REAL,exchange_rate REAL)
          """);
      db.execute("""
      CREATE TABLE currency(id INTEGER PRIMARY KEY, name TEXT UNIQUE, base TEXT,value REAL)

@@ -24,7 +24,7 @@ class AuthRepository extends MySharedPref{
   Future<void>  storeUsername(username) async{
     return (await getInstance).setString("username", username);
   }
-  Future<String>  fetchUsername(username) async{
+  Future<String>  get fetchUsername async{
     return (await getInstance).getString("username");
   }
 
